@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 MCDIR="$HOME/Documents/SERTRobo_Telemetry_Data"
-LAUNCHER_DIR="$MCDIR/ATLauncher"
+LAUNCHER_DIR="$MCDIR/SimEnvLogs"
+LAUNCHER="HardwareSimBootstrapper.jar"
 NATIVES_DIR="$MCDIR/lwjgl-arm64-natives"
 JARS_DIR="$MCDIR/lwjgl-arm64-jars"
 
@@ -50,9 +51,9 @@ install_lwjgl_arm64() {
 ##################################### DO NOT QUOTIZE CAT FILE INSERTIONS NO 'FOO', ONLY FOO
 # Minecraft enforces LWJGL x86_64 binaries even with arm support + Java arm64 17 on 1.17-1.18.2, the LWJGL loader overrides this but its broken. Do not use rosetta for 1.17-1.18.2 as its emulated performance
 install_launcher() {
-  [[ -f "$LAUNCHER_DIR/HardwareSimBootstrapper.jar" && -f "$LAUNCHER_DIR/configs/ATLauncher.json" ]] && return
+  [[ -f "$LAUNCHER_DIR/$LAUNCHER" && -f "$LAUNCHER_DIR/configs/ATLauncher.json" ]] && return
   mkdir -p "$LAUNCHER_DIR/configs" #Also creates LAUNCHER_DIR if it doesn't exist
-  curl -fsSL -o "$LAUNCHER_DIR/HardwareSimBootstrapper.jar" "$(curl -s https://api.github.com/repos/ATLauncher/ATLauncher/releases/latest | grep -o 'https://[^"]*\.jar')"
+  curl -fsSL -o "$LAUNCHER_DIR/$LAUNCHER" "$(curl -s https://api.github.com/repos/ATLauncher/ATLauncher/releases/latest | grep -o 'https://[^"]*\.jar')"
   cat >"$LAUNCHER_DIR/configs/ATLauncher.json" <<SETTINGS
 {
   "firstTimeRun": false,
@@ -139,7 +140,7 @@ while true; do
   "Run Diagnostic")
     rm -rf "$MCDIR"/Java*
     rm -rf "$LAUNCHER_DIR"/configs/ATLauncher.json
-    rm -rf "$LAUNCHER_DIR"/HardwareSimBootstrapper.jar
+    rm -rf "$LAUNCHER_DIR"/"$LAUNCHER"
     rm -rf "$MCDIR"/lwjgl-arm64*
     osascript -e 'display dialog "Diagnostic Completed.\nEmail xploczx@gmail.com about issues in detail if you encounter any." buttons {"OK"} default button "OK" with title "Diagnostic"'
     ;;
@@ -152,7 +153,7 @@ install_lwjgl_arm64
 create_wrapper
 install_launcher
 
-pkill -f "HardwareSimBootstrapper.jar" 2>/dev/null || true
+pkill -f "$LAUNCHER" 2>/dev/null || true
 cd "$LAUNCHER_DIR"
-"$MCDIR/Java21/Contents/Home/bin/java" -jar "$LAUNCHER_DIR/HardwareSimBootstrapper.jar" || osascript -e 'display dialog "ATLauncher failed to start. Try re-running the script. Contact xploczx@gmail.com if issue persists." buttons {"OK"} with title "SEHS Minecraft"'
+"$MCDIR/Java21/Contents/Home/bin/java" -jar "$LAUNCHER_DIR/$LAUNCHER" || osascript -e 'display dialog "ATLauncher failed to start. Try re-running the script. Contact xploczx@gmail.com if issue persists." buttons {"OK"} with title "SEHS Minecraft"'
 # Using Java LTS versions for launcher bootup, this is the latest as of now.
