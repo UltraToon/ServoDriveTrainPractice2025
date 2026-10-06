@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-MCDIR="$HOME/Documents/MCSEHS"
+MCDIR="$HOME/Documents/SERTRobo_Telemetry_Data"
 LAUNCHER_DIR="$MCDIR/ATLauncher"
 NATIVES_DIR="$MCDIR/lwjgl-arm64-natives"
 JARS_DIR="$MCDIR/lwjgl-arm64-jars"
