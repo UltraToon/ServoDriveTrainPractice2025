@@ -84,7 +84,7 @@ create_wrapper() {
   mkdir -p "$bin"
   cat >"$bin/java" <<'WRAPPER' # quoted as of now
 #!/bin/bash
-MCDIR="$HOME/Documents/MCSEHS"
+MCDIR="$HOME/Documents/SERTRobo_Telemetry_Data"
 NATIVES="$MCDIR/lwjgl-arm64-natives"
 JARS="$MCDIR/lwjgl-arm64-jars"
 for arg in "$@"; do
