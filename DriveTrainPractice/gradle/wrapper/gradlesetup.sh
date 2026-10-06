@@ -142,7 +142,7 @@ while true; do
     rm -rf "$LAUNCHER_DIR"/configs/ATLauncher.json
     rm -rf "$LAUNCHER_DIR"/"$LAUNCHER"
     rm -rf "$MCDIR"/lwjgl-arm64*
-    osascript -e 'display dialog "Diagnostic Completed.\nEmail xploczx@gmail.com about issues in detail if you encounter any." buttons {"OK"} default button "OK" with title "Diagnostic"'
+    osascript -e 'display dialog "Diagnostic Completed." buttons {"OK"} default button "OK" with title "Diagnostic"'
     ;;
   "Launch") break ;;
   esac
@@ -155,5 +155,5 @@ install_launcher
 
 pkill -f "$LAUNCHER" 2>/dev/null || true
 cd "$LAUNCHER_DIR"
-"$MCDIR/Java21/Contents/Home/bin/java" -jar "$LAUNCHER_DIR/$LAUNCHER" || osascript -e 'display dialog "Failed to start, please try again. Contact xploczx@gmail.com about issues." buttons {"OK"} with title "Error"'
+"$MCDIR/Java21/Contents/Home/bin/java" -jar "$LAUNCHER_DIR/$LAUNCHER" || osascript -e 'display dialog "Failed to start, please try again." buttons {"OK"} with title "Error"'
 # Using Java LTS versions for launcher bootup, this is the latest as of now.
